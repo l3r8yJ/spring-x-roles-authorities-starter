@@ -32,7 +32,7 @@ SOFTWARE.
   </parent>
   <groupId>ru.l3r8y</groupId>
   <artifactId>spring-x-roles-authorities-starter</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1</version>
   <packaging>jar</packaging>
   <name>spring-x-roles-authorities-starter</name>
   <description>spring-x-roles-authorities-starter</description>
