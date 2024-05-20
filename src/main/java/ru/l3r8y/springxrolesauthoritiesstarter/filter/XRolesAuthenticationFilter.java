@@ -63,7 +63,7 @@ public class XRolesAuthenticationFilter extends OncePerRequestFilter {
         }
         final Authentication authorized =
             SecurityContextHolder.getContext().getAuthentication();
-        final UsernamePasswordAuthenticationToken withXRoles =
+        final Authentication withXRoles =
             new UsernamePasswordAuthenticationToken(
                 authorized.getPrincipal(),
                 authorized.getCredentials(),
