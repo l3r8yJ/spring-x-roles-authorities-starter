@@ -1,0 +1,21 @@
+architect:
+  - l3r8yJ
+docker:
+  image: l3r8y/rultor-image:1.0.2
+assets:
+  settings.xml: l3r8yJ/home#assets/settings.xml
+  secring.gpg: l3r8yJ/home#assets/secring.gpg
+  pubring.gpg: l3r8yJ/home#assets/pubring.gpg
+merge:
+  script:
+    - "mvn clean install --errors --batch-mode"
+release:
+  pre: false
+  sensetive:
+    - settings.xml
+  script: |-
+    [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit -1
+#    export MAVEN_OPTS="--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED"
+    mvn versions:set "-DnewVersion=${tag}"
+    git commit -am "${tag}"
+    mvn clean deploy -Prelease --errors --batch-mode --settings ../settings.xml
