@@ -50,6 +50,13 @@ class EndpointsTest {
     }
 
     @Test
+    public void passesOpenedEndpointWithXRoles() throws Exception {
+        this.mvc.perform(
+            get("/open").header("X-Roles", "fpoop")
+        ).andExpect(status().isOk());
+    }
+
+    @Test
     @WithMockUser(username = "ruby")
     public void notPassesClosedEndpoint() throws Exception {
         this.mvc
