@@ -23,31 +23,15 @@
  *
  */
 
-package ru.l3r8y.springxrolesauthoritiesstarter.config;
+package ru.l3r8y.xroles;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import ru.l3r8y.springxrolesauthoritiesstarter.filter.XRolesAuthenticationFilter;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@AutoConfiguration
-@ConditionalOnProperty(
-    prefix = "x-roles",
-    name = "enabled",
-    havingValue = "true"
-)
-public class XRolesAutoConfiguration {
+@SpringBootApplication
+public class TestApplication {
 
-    private static final int ZERO_ORDER =
-        SecurityProperties.DEFAULT_FILTER_ORDER - 100;
-
-    @Bean
-    public FilterRegistrationBean<XRolesAuthenticationFilter> xRolesFilterRegistration() {
-        final FilterRegistrationBean<XRolesAuthenticationFilter> registration =
-            new FilterRegistrationBean<>(new XRolesAuthenticationFilter());
-        registration.setOrder(XRolesAutoConfiguration.ZERO_ORDER);
-        return registration;
+    public static void main(final String[] args) {
+        SpringApplication.run(TestApplication.class, args);
     }
 }

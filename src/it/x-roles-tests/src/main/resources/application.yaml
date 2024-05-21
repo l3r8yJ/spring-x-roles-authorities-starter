@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: "x-roles-tests"
+
+x-roles:
+  enabled: true

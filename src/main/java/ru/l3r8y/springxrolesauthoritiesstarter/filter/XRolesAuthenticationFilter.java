@@ -49,9 +49,13 @@ public class XRolesAuthenticationFilter extends OncePerRequestFilter {
         final HttpServletResponse response,
         final FilterChain chain
     ) throws ServletException, IOException {
-        final String[] roles = request
-            .getHeader(XRolesAuthenticationFilter.X_ROLES_HEADER)
-            .split(",");
+        final String xRoles =
+            request.getHeader(XRolesAuthenticationFilter.X_ROLES_HEADER);
+        if (xRoles == null) {
+            chain.doFilter(request, response);
+            return;
+        }
+        final String[] roles = xRoles.split(",");
         final List<SimpleGrantedAuthority> authorities = Stream
             .of(roles)
             .map(String::trim)
@@ -60,6 +64,7 @@ public class XRolesAuthenticationFilter extends OncePerRequestFilter {
             .toList();
         if (authorities.isEmpty()) {
             chain.doFilter(request, response);
+            return;
         }
         final Authentication authorized =
             SecurityContextHolder.getContext().getAuthentication();
