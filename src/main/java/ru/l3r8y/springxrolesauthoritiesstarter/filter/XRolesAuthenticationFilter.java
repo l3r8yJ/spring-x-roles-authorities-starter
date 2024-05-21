@@ -37,7 +37,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class XRolesAuthenticationFilter extends OncePerRequestFilter {
@@ -50,35 +49,36 @@ public class XRolesAuthenticationFilter extends OncePerRequestFilter {
         final HttpServletResponse response,
         final FilterChain chain
     ) throws ServletException, IOException {
-        Optional.ofNullable(request.getHeader(XRolesAuthenticationFilter.X_ROLES_HEADER))
-            .ifPresent(
-                roles -> {
-                    final List<SimpleGrantedAuthority> authorities = Stream
-                        .of(roles.split(","))
-                        .map(String::trim)
-                        .map(role -> role.toLowerCase(Locale.ROOT))
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
-                    Optional.ofNullable(
-                        SecurityContextHolder
-                            .getContext()
-                            .getAuthentication()
-                        )
-                            .ifPresent(
-                                authorized -> {
-                                    final Authentication withXRoles =
-                                        new UsernamePasswordAuthenticationToken(
-                                            authorized.getPrincipal(),
-                                            authorized.getCredentials(),
-                                            authorities
-                                        );
-                                    SecurityContextHolder
-                                        .getContext()
-                                        .setAuthentication(withXRoles);
-                                }
-                            );
-                }
+        final String xRoles =
+            request.getHeader(XRolesAuthenticationFilter.X_ROLES_HEADER);
+        if (xRoles == null) {
+            chain.doFilter(request, response);
+            return;
+        }
+        final String[] roles = xRoles.split(",");
+        final List<SimpleGrantedAuthority> authorities = Stream
+            .of(roles)
+            .map(String::trim)
+            .map(role -> role.toLowerCase(Locale.ROOT))
+            .map(SimpleGrantedAuthority::new)
+            .toList();
+        if (authorities.isEmpty()) {
+            chain.doFilter(request, response);
+            return;
+        }
+        final Authentication authorized =
+            SecurityContextHolder.getContext().getAuthentication();
+        if (authorized == null) {
+            chain.doFilter(request, response);
+            return;
+        }
+        final Authentication withXRoles =
+            new UsernamePasswordAuthenticationToken(
+                authorized.getPrincipal(),
+                authorized.getCredentials(),
+                authorities
             );
+        SecurityContextHolder.getContext().setAuthentication(withXRoles);
         chain.doFilter(request, response);
     }
 }
