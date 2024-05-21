@@ -2,6 +2,9 @@
 
 This starter allows you to test your role model for non-production scenarios.
 
+[![maven central](http://maven-badges.herokuapp.com/maven-central/ru.l3r8y/spring-x-roles-authorities-starter/badge.svg)](https://search.maven.org/artifact/ru.l3r8y/spring-x-roles-authorities-starter)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/l3r8yJ/spring-x-roles-authorities-starter/blob/master/LICENSE.txt)
+
 ## How to
 
 1. Add a dependency
