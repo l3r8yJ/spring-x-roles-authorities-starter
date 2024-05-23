@@ -49,13 +49,13 @@ public class XRolesAuthenticationFilter extends OncePerRequestFilter {
         final HttpServletResponse response,
         final FilterChain chain
     ) throws ServletException, IOException {
-        final String xRoles =
+        final String header =
             request.getHeader(XRolesAuthenticationFilter.X_ROLES_HEADER);
-        if (xRoles == null) {
+        if (header == null) {
             chain.doFilter(request, response);
             return;
         }
-        final String[] roles = xRoles.split(",");
+        final String[] roles = header.split(",");
         final List<SimpleGrantedAuthority> authorities = Stream
             .of(roles)
             .map(String::trim)

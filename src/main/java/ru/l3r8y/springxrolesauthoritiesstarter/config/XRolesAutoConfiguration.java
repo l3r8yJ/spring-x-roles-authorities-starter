@@ -40,14 +40,11 @@ import ru.l3r8y.springxrolesauthoritiesstarter.filter.XRolesAuthenticationFilter
 )
 public class XRolesAutoConfiguration {
 
-    private static final int ZERO_ORDER =
-        SecurityProperties.DEFAULT_FILTER_ORDER - 100;
-
     @Bean
     public FilterRegistrationBean<XRolesAuthenticationFilter> xRolesFilterRegistration() {
         final FilterRegistrationBean<XRolesAuthenticationFilter> registration =
             new FilterRegistrationBean<>(new XRolesAuthenticationFilter());
-        registration.setOrder(XRolesAutoConfiguration.ZERO_ORDER);
+        registration.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER);
         return registration;
     }
 }
