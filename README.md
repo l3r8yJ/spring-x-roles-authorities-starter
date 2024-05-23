@@ -15,14 +15,14 @@ This starter allows you to test your role model for non-production scenarios.
     <groupId>ru.l3r8y</groupId>
     <artifactId>spring-x-roles-authorities-starter</artifactId>
     <version><!-- latest --></version>
-</dependency> 
+</dependency>
 ```
 
 2. Add to `application.yaml`
 
 ```yaml
 x-roles:
-    enabled: true
+  enabled: true
 ```
 
 Done! Now starter provides an ability to extract authorities from `X-Roles` header:
@@ -52,3 +52,17 @@ final class Controller {
     }
 }
 ```
+
+## How to Contribute
+
+Fork repository, make changes, then send us a [pull request](https://www.yegor256.com/2014/04/15/github-guidelines.html).
+We will review your changes and apply them to the `master` branch shortly,
+provided they don't violate our quality standards.
+To avoid frustration,
+before sending us your pull request please run full Maven build:
+
+```bash
+mvn clean install
+```
+
+You will need [Maven 3.3+](https://maven.apache.org) and Java 8+ installed.
