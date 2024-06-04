@@ -1,6 +1,8 @@
 ## Spring X-Roles Authorities starter
 
-This starter allows you to test your role model for non-production scenarios.
+This starter allows you to test your role model for non-production scenarios. 
+
+[Link](https://www.l3r8y.ru/2024/05/24/role-model-testing-with-spring-boot) to blog post.
 
 [![maven central](http://maven-badges.herokuapp.com/maven-central/ru.l3r8y/spring-x-roles-authorities-starter/badge.svg)](https://search.maven.org/artifact/ru.l3r8y/spring-x-roles-authorities-starter)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/l3r8yJ/spring-x-roles-authorities-starter/blob/master/LICENSE.txt)
