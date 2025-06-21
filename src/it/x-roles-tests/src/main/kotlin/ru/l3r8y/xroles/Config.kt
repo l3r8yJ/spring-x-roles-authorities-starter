@@ -20,31 +20,30 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package ru.l3r8y.springxrolesauthoritiesstarter.config;
+package ru.l3r8y.xroles
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import ru.l3r8y.springxrolesauthoritiesstarter.filter.XRolesAuthenticationFilter;
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
+import org.springframework.security.web.SecurityFilterChain
 
-@AutoConfiguration
-@ConditionalOnProperty(
-    prefix = "x-roles",
-    name = "enabled",
-    havingValue = "true"
-)
-public class XRolesAutoConfiguration {
+@Configuration
+open class Config {
 
     @Bean
-    public FilterRegistrationBean<XRolesAuthenticationFilter> xRolesFilterRegistration() {
-        final FilterRegistrationBean<XRolesAuthenticationFilter> registration =
-            new FilterRegistrationBean<>(new XRolesAuthenticationFilter());
-        registration.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER);
-        return registration;
+    open fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        return http
+            .csrf(AbstractHttpConfigurer<*, *>::disable)
+            .authorizeHttpRequests { request -> request
+                .requestMatchers("/closed")
+                .hasAuthority("monkey")
+                .requestMatchers("/open")
+                .permitAll()
+                .anyRequest()
+                .authenticated() }
+            .build()
     }
 }

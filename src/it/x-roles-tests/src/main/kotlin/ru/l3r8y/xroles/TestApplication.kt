@@ -20,27 +20,16 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package ru.l3r8y.xroles;
+package ru.l3r8y.xroles
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
-@RestController
-public class Endpoints {
+@SpringBootApplication
+open class TestApplication
 
-    @GetMapping("/open")
-    public ResponseEntity<String> open() {
-        return ResponseEntity.ok("open");
-    }
-
-    @GetMapping("/closed")
-    @PreAuthorize("hasAnyAuthority('monkey')")
-    public ResponseEntity<String> closed() {
-        return ResponseEntity.ok("closed");
-    }
+fun main(args: Array<String>) {
+    runApplication<TestApplication>(*args)
 }

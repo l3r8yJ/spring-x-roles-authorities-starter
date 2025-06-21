@@ -20,21 +20,20 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package ru.l3r8y.xroles;
+package ru.l3r8y.xroles
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpStatus
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -42,33 +41,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EndpointsTest {
 
     @Autowired
-    private MockMvc mvc;
+    private lateinit var mvc: MockMvc
 
     @Test
-    public void passesOpenedEndpoint() throws Exception {
-        this.mvc.perform(get("/open")).andExpect(status().isOk());
+    fun `should pass opened endpoint`() {
+        mvc.perform(get("/open")).andExpect(status().isOk)
     }
 
     @Test
-    public void passesOpenedEndpointWithXRoles() throws Exception {
-        this.mvc.perform(
+    fun `should pass opened endpoint with X-Roles header`() {
+        mvc.perform(
             get("/open").header("X-Roles", "fpoop")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk)
     }
 
     @Test
     @WithMockUser(username = "ruby")
-    public void notPassesClosedEndpoint() throws Exception {
-        this.mvc
+    fun `should not pass closed endpoint without proper roles`() {
+        mvc
             .perform(get("/closed"))
-            .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+            .andExpect(status().`is`(HttpStatus.FORBIDDEN.value()))
     }
 
     @Test
     @WithMockUser(username = "ruby")
-    public void passesClosedEndpoint() throws Exception {
-        this.mvc
-            .perform(get("/closed").header("X-Roles", "dawg, monkey, cat"))
-            .andExpect(status().isOk());
+    fun `should pass closed endpoint with proper roles`() {
+        mvc.perform(
+            get("/closed").header("X-Roles", "dawg, monkey, cat")
+        ).andExpect(status().isOk)
     }
 }
