@@ -38,7 +38,7 @@ import java.util.*
 class XRolesAuthenticationFilter : OncePerRequestFilter() {
 
     private companion object {
-        private const val X_ROLES_HEADER = "X-Roles"
+        const val X_ROLES_HEADER = "X-Roles"
     }
 
     override fun doFilterInternal(
@@ -46,11 +46,7 @@ class XRolesAuthenticationFilter : OncePerRequestFilter() {
         response: HttpServletResponse,
         chain: FilterChain
     ) {
-        val header = request.getHeader(X_ROLES_HEADER)
-        header ?: run {
-            chain.doFilter(request, response)
-            return
-        }
+        val header = request.getHeader(X_ROLES_HEADER) ?: run { chain.doFilter(request, response); return }
         val roles = header.split(",")
         val authorities = roles
             .map { it.trim() }
@@ -61,17 +57,15 @@ class XRolesAuthenticationFilter : OncePerRequestFilter() {
             chain.doFilter(request, response)
             return
         }
-        val authorized = SecurityContextHolder.getContext().authentication
-        authorized ?: run {
-            chain.doFilter(request, response)
-            return
-        }
+        val authorized = SecurityContextHolder.getContext().authentication ?: run { chain.doFilter(request, response); return }
         val withXRoles = UsernamePasswordAuthenticationToken(
             authorized.principal,
             authorized.credentials,
             authorities
         )
-        SecurityContextHolder.getContext().authentication = withXRoles
+        SecurityContextHolder.getContext().apply {
+            this.authentication = withXRoles
+        }
         chain.doFilter(request, response)
     }
 }

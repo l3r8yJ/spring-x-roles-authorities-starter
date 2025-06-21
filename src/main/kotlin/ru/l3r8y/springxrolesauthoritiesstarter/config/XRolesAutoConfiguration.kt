@@ -41,8 +41,8 @@ class XRolesAutoConfiguration {
 
     @Bean
     fun xRolesFilterRegistration(): FilterRegistrationBean<XRolesAuthenticationFilter> {
-        val registration = FilterRegistrationBean(XRolesAuthenticationFilter())
-        registration.order = SecurityProperties.DEFAULT_FILTER_ORDER
-        return registration
+        return FilterRegistrationBean(XRolesAuthenticationFilter()).apply {
+            this.order = SecurityProperties.DEFAULT_FILTER_ORDER
+        }
     }
 }
