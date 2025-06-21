@@ -27,23 +27,22 @@ package ru.l3r8y.xroles
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
+import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
-open class Config {
+class Config {
 
     @Bean
-    open fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        return http
-            .csrf(AbstractHttpConfigurer<*, *>::disable)
-            .authorizeHttpRequests { request -> request
-                .requestMatchers("/closed")
-                .hasAuthority("monkey")
-                .requestMatchers("/open")
-                .permitAll()
-                .anyRequest()
-                .authenticated() }
-            .build()
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http {
+            csrf { disable() }
+            authorizeHttpRequests {
+                authorize("/closed", hasAuthority("monkey"))
+                authorize("/open", permitAll)
+                authorize(anyRequest, authenticated)
+            }
+        }
+        return http.build()
     }
 }

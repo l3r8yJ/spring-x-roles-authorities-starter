@@ -97,7 +97,6 @@ SOFTWARE.
   </dependencies>
   <build>
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
@@ -111,20 +110,27 @@ SOFTWARE.
               <goal>compile</goal>
             </goals>
           </execution>
-          <execution>
-            <id>test-compile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
         </executions>
         <configuration>
           <jvmTarget>${kotlin.compiler.jvmTarget}</jvmTarget>
           <args>
             <arg>-Xjsr305=strict</arg>
           </args>
+          <compilerPlugins>
+            <plugin>all-open</plugin>
+          </compilerPlugins>
+          <pluginOptions>
+            <option>all-open:annotation=org.springframework.context.annotation.Configuration</option>
+            <option>all-open:annotation=org.springframework.boot.autoconfigure.AutoConfiguration</option>
+          </pluginOptions>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-allopen</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

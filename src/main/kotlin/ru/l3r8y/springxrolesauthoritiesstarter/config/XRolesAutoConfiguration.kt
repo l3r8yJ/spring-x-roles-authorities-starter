@@ -37,10 +37,10 @@ import ru.l3r8y.springxrolesauthoritiesstarter.filter.XRolesAuthenticationFilter
     name = ["enabled"],
     havingValue = "true"
 )
-open class XRolesAutoConfiguration {
+class XRolesAutoConfiguration {
 
     @Bean
-    open fun xRolesFilterRegistration(): FilterRegistrationBean<XRolesAuthenticationFilter> {
+    fun xRolesFilterRegistration(): FilterRegistrationBean<XRolesAuthenticationFilter> {
         val registration = FilterRegistrationBean(XRolesAuthenticationFilter())
         registration.order = SecurityProperties.DEFAULT_FILTER_ORDER
         return registration

@@ -37,7 +37,7 @@ import java.util.*
 
 class XRolesAuthenticationFilter : OncePerRequestFilter() {
 
-    companion object {
+    private companion object {
         private const val X_ROLES_HEADER = "X-Roles"
     }
 
@@ -47,7 +47,7 @@ class XRolesAuthenticationFilter : OncePerRequestFilter() {
         chain: FilterChain
     ) {
         val header = request.getHeader(X_ROLES_HEADER)
-        if (header == null) {
+        header ?: run {
             chain.doFilter(request, response)
             return
         }
@@ -62,7 +62,7 @@ class XRolesAuthenticationFilter : OncePerRequestFilter() {
             return
         }
         val authorized = SecurityContextHolder.getContext().authentication
-        if (authorized == null) {
+        authorized ?: run {
             chain.doFilter(request, response)
             return
         }
