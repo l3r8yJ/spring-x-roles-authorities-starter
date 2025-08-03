@@ -20,31 +20,16 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package ru.l3r8y.springxrolesauthoritiesstarter.config;
+package ru.l3r8y.xroles
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import ru.l3r8y.springxrolesauthoritiesstarter.filter.XRolesAuthenticationFilter;
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
-@AutoConfiguration
-@ConditionalOnProperty(
-    prefix = "x-roles",
-    name = "enabled",
-    havingValue = "true"
-)
-public class XRolesAutoConfiguration {
+@SpringBootApplication
+class TestApplication
 
-    @Bean
-    public FilterRegistrationBean<XRolesAuthenticationFilter> xRolesFilterRegistration() {
-        final FilterRegistrationBean<XRolesAuthenticationFilter> registration =
-            new FilterRegistrationBean<>(new XRolesAuthenticationFilter());
-        registration.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER);
-        return registration;
-    }
+fun main(args: Array<String>) {
+    runApplication<TestApplication>(*args)
 }

@@ -20,32 +20,29 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package ru.l3r8y.xroles;
+package ru.l3r8y.springxrolesauthoritiesstarter.config
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.boot.autoconfigure.AutoConfiguration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.autoconfigure.security.SecurityProperties
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
+import ru.l3r8y.springxrolesauthoritiesstarter.filter.XRolesAuthenticationFilter
 
-@Configuration
-public class Config {
+@AutoConfiguration
+@ConditionalOnProperty(
+    prefix = "x-roles",
+    name = ["enabled"],
+    havingValue = "true"
+)
+class XRolesAutoConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http)
-        throws Exception {
-        return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(request -> request
-                .requestMatchers("/closed")
-                .hasAuthority("monkey")
-                .requestMatchers("/open")
-                .permitAll()
-                .anyRequest()
-                .authenticated())
-            .build();
+    fun xRolesFilterRegistration(): FilterRegistrationBean<XRolesAuthenticationFilter> {
+        return FilterRegistrationBean(XRolesAuthenticationFilter()).apply {
+            this.order = SecurityProperties.DEFAULT_FILTER_ORDER
+        }
     }
 }

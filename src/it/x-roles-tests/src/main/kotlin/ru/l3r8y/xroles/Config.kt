@@ -20,27 +20,29 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package ru.l3r8y.xroles;
+package ru.l3r8y.xroles
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.web.SecurityFilterChain
 
-@RestController
-public class Endpoints {
+@Configuration
+class Config {
 
-    @GetMapping("/open")
-    public ResponseEntity<String> open() {
-        return ResponseEntity.ok("open");
-    }
-
-    @GetMapping("/closed")
-    @PreAuthorize("hasAnyAuthority('monkey')")
-    public ResponseEntity<String> closed() {
-        return ResponseEntity.ok("closed");
+    @Bean
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http {
+            csrf { disable() }
+            authorizeHttpRequests {
+                authorize("/closed", hasAuthority("monkey"))
+                authorize("/open", permitAll)
+                authorize(anyRequest, authenticated)
+            }
+        }
+        return http.build()
     }
 }
